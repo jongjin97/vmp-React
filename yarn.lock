@@ -11035,6 +11035,11 @@ react-i18next@^11.11.4:
     "@babel/runtime" "^7.14.5"
     html-parse-stringify "^3.0.1"
 
+react-iamport@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/react-iamport/-/react-iamport-0.0.2.tgz#05ff608017e76484150ddaecc554eff56a933b1e"
+  integrity sha512-qjSBtY7vX/Ntx0bS2TChALOeFC5+Y7G2Y77/DzWArzIK3u9DHL8VcHrowjXGozCLDaue73yLLuNgP9eELHmu6A==
+
 react-infinite-scroll-component@^6.1.0:
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/react-infinite-scroll-component/-/react-infinite-scroll-component-6.1.0.tgz#7e511e7aa0f728ac3e51f64a38a6079ac522407f"
