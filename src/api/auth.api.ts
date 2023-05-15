@@ -1,6 +1,6 @@
 import { httpApi } from '@app/api/http.api';
-import './mocks/auth.api.mock';
 import { UserModel } from '@app/domain/UserModel';
+import { AxiosResponseHeaders } from 'axios';
 
 export interface AuthData {
   email: string;
@@ -8,10 +8,12 @@ export interface AuthData {
 }
 
 export interface SignUpRequest {
-  firstName: string;
-  lastName: string;
+  name: string;
   email: string;
+  birth: string;
+  phone: string;
   password: string;
+  passwordConfirm: string;
 }
 
 export interface ResetPasswordRequest {
@@ -32,15 +34,20 @@ export interface LoginRequest {
 }
 
 export interface LoginResponse {
+  success: boolean;
   token: string;
-  user: UserModel;
+  authorization: string;
+  response: UserModel;
 }
 
-export const login = (loginPayload: LoginRequest): Promise<LoginResponse> =>
-  httpApi.post<LoginResponse>('login', { ...loginPayload }).then(({ data }) => data);
+export const login = (loginPayload: LoginRequest): Promise<AxiosResponseHeaders | LoginResponse> =>
+  httpApi.post<LoginResponse>('users/login', { ...loginPayload }).then(({ data, headers }) => {
+    console.log(data, headers);
+    return { ...data, authorization: headers.authorization };
+  });
 
 export const signUp = (signUpData: SignUpRequest): Promise<undefined> =>
-  httpApi.post<undefined>('signUp', { ...signUpData }).then(({ data }) => data);
+  httpApi.post<undefined>('users/signup', { ...signUpData }).then(({ data }) => data);
 
 export const resetPassword = (resetPasswordPayload: ResetPasswordRequest): Promise<undefined> =>
   httpApi.post<undefined>('forgotPassword', { ...resetPasswordPayload }).then(({ data }) => data);
