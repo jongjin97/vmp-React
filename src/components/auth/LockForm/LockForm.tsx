@@ -42,6 +42,8 @@ export const LockForm: React.FC = () => {
 
   const handleSubmit = ({ password }: LockFormData) => {
     setLoading(true);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     dispatch(doLogin({ email: user?.email || '', password }))
       .unwrap()
       .then(() => {
