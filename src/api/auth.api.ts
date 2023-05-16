@@ -1,6 +1,7 @@
 import { httpApi } from '@app/api/http.api';
 import { UserModel } from '@app/domain/UserModel';
 import { AxiosResponseHeaders } from 'axios';
+import { RequestPayResponse } from 'iamport-typings';
 
 export interface AuthData {
   email: string;
@@ -57,3 +58,6 @@ export const verifySecurityCode = (securityCodePayload: SecurityCodePayload): Pr
 
 export const setNewPassword = (newPasswordData: NewPasswordData): Promise<undefined> =>
   httpApi.post<undefined>('setNewPassword', { ...newPasswordData }).then(({ data }) => data);
+
+export const updatePoint = (payment: RequestPayResponse): Promise<undefined> =>
+  httpApi.post<undefined>('uesrs/point/', { ...payment }).then(({ data }) => data);
