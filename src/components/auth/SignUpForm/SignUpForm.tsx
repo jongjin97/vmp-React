@@ -3,35 +3,40 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { BaseForm } from '@app/components/common/forms/BaseForm/BaseForm';
-import { useAppDispatch } from '@app/hooks/reduxHooks';
+import { useAppDispatch, useAppSelector } from '@app/hooks/reduxHooks';
 import { doSignUp } from '@app/store/slices/authSlice';
 import { notificationController } from '@app/controllers/notificationController';
 import { ReactComponent as GoogleIcon } from '@app/assets/icons/google.svg';
 import { ReactComponent as FacebookIcon } from '@app/assets/icons/facebook.svg';
 import * as Auth from '@app/components/layouts/AuthLayout/AuthLayout.styles';
 import * as S from './SignUpForm.styles';
-import { DayjsDatePicker } from '@app/components/common/pickers/DayjsDatePicker';
+import { doCertification } from '@app/store/slices/iamportSlice';
 
 interface SignUpFormData {
-  name: string;
+  name: string | undefined;
   email: string;
-  birth: string;
-  phone: string;
+  birth: string | undefined;
+  phone: string | undefined;
   password: string;
   passwordConfirm: string;
+}
+interface CertificationResponse {
+  success: boolean;
+  imp_uid: string;
+  merchant_uid: string;
+  error_code: string | null;
+  error_msg: string | null;
 }
 
 export const SignUpForm: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [isLoading, setLoading] = useState(false);
-
   const { t } = useTranslation();
-
+  const certification = useAppSelector((state) => state?.iamport?.result);
   const handleChageBirth = (values: string) => {
     const birth = values;
     const date = new Date(birth);
-
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
@@ -39,10 +44,35 @@ export const SignUpForm: React.FC = () => {
     const result = `${year}${month}${day}`;
     return result;
   };
-
+  const callback = (response: CertificationResponse) => {
+    if (response.success) {
+      dispatch(doCertification(response.imp_uid))
+        .unwrap()
+        .then((response) => {
+          const result = response.response.response;
+          console.log(response.response.response);
+        });
+    } else {
+    }
+  };
+  const onClickCertification = () => {
+    const { IMP } = window;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    IMP.init('imp24057748');
+    const data = {
+      merchant_uid: 'merchat_' + Date.now(),
+    };
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    IMP.certification(data, callback);
+  };
   const handleSubmit = (values: SignUpFormData) => {
     setLoading(true);
-    values.birth = handleChageBirth(values.birth);
+    console.log(values);
+    values.name = certification?.response?.response?.name;
+    values.phone = certification?.response?.response?.phone;
+    values.birth = certification?.response?.response?.birthday;
     dispatch(doSignUp(values))
       .unwrap()
       .then(() => {
@@ -62,32 +92,37 @@ export const SignUpForm: React.FC = () => {
     <Auth.FormWrapper>
       <BaseForm layout="vertical" onFinish={handleSubmit} requiredMark="optional">
         <S.Title>{t('common.signUp')}</S.Title>
-        <Auth.FormItem
-          name="name"
-          label={t('common.name')}
-          rules={[{ required: true, message: t('common.requiredField') }]}
-        >
-          <Auth.FormInput placeholder={t('common.name')} />
-        </Auth.FormItem>
-        <Auth.FormItem
-          name="birth"
-          label="Birth"
-          rules={[
-            {
-              required: true,
-              message: 'Please select date',
-            },
-          ]}
-        >
-          <DayjsDatePicker />
-        </Auth.FormItem>
-        <Auth.FormItem
-          label={t('common.phone')}
-          name="phone"
-          rules={[{ required: true, message: t('common.requiredField') }]}
-        >
-          <Auth.FormInput placeholder={t('common.phone')} />
-        </Auth.FormItem>
+        <BaseForm.Item noStyle>
+          <Auth.SubmitButton type="primary" onClick={onClickCertification}>
+            {t('common.signUp')}
+          </Auth.SubmitButton>
+        </BaseForm.Item>
+        {/*<Auth.FormItem*/}
+        {/*  name="name"*/}
+        {/*  label={t('common.name')}*/}
+        {/*  rules={[{ required: true, message: t('common.requiredField') }]}*/}
+        {/*>*/}
+        {/*  <Auth.FormInput placeholder={t('common.name')} />*/}
+        {/*</Auth.FormItem>*/}
+        {/*<Auth.FormItem*/}
+        {/*  name="birth"*/}
+        {/*  label="Birth"*/}
+        {/*  rules={[*/}
+        {/*    {*/}
+        {/*      required: true,*/}
+        {/*      message: 'Please select date',*/}
+        {/*    },*/}
+        {/*  ]}*/}
+        {/*>*/}
+        {/*  <DayjsDatePicker />*/}
+        {/*</Auth.FormItem>*/}
+        {/*<Auth.FormItem*/}
+        {/*  label={t('common.phone')}*/}
+        {/*  name="phone"*/}
+        {/*  rules={[{ required: true, message: t('common.requiredField') }]}*/}
+        {/*>*/}
+        {/*  <Auth.FormInput placeholder={t('common.phone')} />*/}
+        {/*</Auth.FormItem>*/}
         <Auth.FormItem
           name="email"
           label={t('common.email')}

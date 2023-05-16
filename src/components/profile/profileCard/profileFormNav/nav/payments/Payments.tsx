@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { PaymentHistory } from './paymentHistory/PaymentHistory/PaymentHistory';
-import { PaymentMethod } from './paymentMethod/PaymentMethod';
+import { PaymentMethodTest } from './paymentMethod/PaymentMethodTest';
 import { BaseCard } from '@app/components/common/BaseCard/BaseCard';
 import { useResponsive } from 'hooks/useResponsive';
 import { BaseRow } from '@app/components/common/BaseRow/BaseRow';
@@ -13,7 +13,7 @@ export const Payments: React.FC = () => {
     () => (
       <BaseRow gutter={[0, 30]}>
         <BaseCol span={24}>
-          <PaymentMethod />
+          <PaymentMethodTest />
         </BaseCol>
         <BaseCol span={24}>
           <PaymentHistory />
