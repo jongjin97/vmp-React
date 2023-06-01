@@ -10,11 +10,9 @@ import {
   SecurityCodePayload,
   NewPasswordData,
   setNewPassword,
-  updatePoint,
 } from '@app/api/auth.api';
 import { setUser } from '@app/store/slices/userSlice';
 import { deleteToken, deleteUser, persistToken, readToken } from '@app/services/localStorage.service';
-import { RequestPayResponse } from 'iamport-typings';
 
 export interface AuthSlice {
   token: string | null;
@@ -55,10 +53,6 @@ export const doLogout = createAsyncThunk('auth/doLogout', (payload, { dispatch }
   deleteUser();
   dispatch(setUser(null));
 });
-
-export const doUpdatePoint = createAsyncThunk('auth/doUpdatePoint', async (payment: RequestPayResponse) =>
-  updatePoint(payment),
-);
 
 const authSlice = createSlice({
   name: 'auth',

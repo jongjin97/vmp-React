@@ -7,9 +7,8 @@ import { BaseRadio } from '@app/components/common/BaseRadio/BaseRadio';
 import { useResponsive } from '@app/hooks/useResponsive';
 import { notificationController } from '@app/controllers/notificationController';
 import { RequestPayParams, RequestPayResponse } from 'iamport-typings';
-import { useAppDispatch, useAppSelector } from '@app/hooks/reduxHooks';
+import { useAppSelector } from '@app/hooks/reduxHooks';
 import { BaseCard } from '@app/components/common/BaseCard/BaseCard';
-import { doUpdatePoint } from '@app/store/slices/authSlice';
 
 const formItemLayout = {
   labelCol: { span: 24 },
@@ -27,7 +26,6 @@ export const PaymentMethodTest: React.FC = () => {
   const { t } = useTranslation();
   const user = useAppSelector((state) => state.user?.user);
   const { isTablet } = useResponsive();
-  const dispatch = useAppDispatch();
   const onClickPayment = (values: paymentMethodTestRequest) => {
     setLoading(true);
     const { IMP } = window;
@@ -54,14 +52,6 @@ export const PaymentMethodTest: React.FC = () => {
 
   const onPaymentAccepted = (response: RequestPayResponse) => {
     const { imp_uid, merchant_uid } = response;
-    console.log(response);
-    if (response) {
-      dispatch(doUpdatePoint(response))
-        .unwrap()
-        .then((res) => {
-          console.log(res);
-        });
-    }
     console.log(imp_uid, merchant_uid);
   };
   const onFinish = async (values = {}) => {
