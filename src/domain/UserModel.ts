@@ -1,5 +1,5 @@
 export interface UserModel {
-  name: string;
+  name: any;
   id: number;
   firstName: string;
   lastName: string;
@@ -22,7 +22,6 @@ export interface UserModel {
   address2?: string;
   zipcode: number;
   website?: string;
-  point: string;
   socials?: {
     twitter?: string;
     facebook?: string;
