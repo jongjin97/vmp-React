@@ -1,6 +1,6 @@
 import { httpApi } from '@app/api/http.api';
 import { UserModel } from '@app/domain/UserModel';
-import axios, { AxiosResponseHeaders } from 'axios';
+import { AxiosResponseHeaders } from 'axios';
 import { RequestPayResponse } from 'iamport-typings';
 
 export interface AuthData {
@@ -47,12 +47,6 @@ export const login = (loginPayload: LoginRequest): Promise<AxiosResponseHeaders 
     return { ...data, authorization: headers.authorization };
   });
 
-export const refresh = () =>
-  httpApi.post<undefined>('token').then(({ data, headers }) => {
-    console.log(data, headers);
-    return { authorization: headers.authorization };
-  });
-
 export const signUp = (signUpData: SignUpRequest): Promise<undefined> =>
   httpApi.post<undefined>('users/signup', { ...signUpData }).then(({ data }) => data);
 
@@ -66,6 +60,4 @@ export const setNewPassword = (newPasswordData: NewPasswordData): Promise<undefi
   httpApi.post<undefined>('setNewPassword', { ...newPasswordData }).then(({ data }) => data);
 
 export const updatePoint = (payment: RequestPayResponse): Promise<undefined> =>
-  httpApi.post<undefined>('uesrs/point', { ...payment }).then(({ data }) => data);
-
-export const refreshTest = () => httpApi.post<undefined>('payment/test').then(({ data }) => data);
+  httpApi.post<undefined>('uesrs/point/', { ...payment }).then(({ data }) => data);
