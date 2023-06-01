@@ -5,8 +5,14 @@ export interface UserModel {
   lastName: string;
   imgUrl: string;
   userName: string;
-  email: string;
-  phone: string;
+  email: {
+    name: string;
+    verified: boolean;
+  };
+  phone: {
+    number: string;
+    verified: boolean;
+  };
   sex: 'male' | 'female';
   birthday: string;
   lang: 'en' | 'de';

@@ -8,10 +8,10 @@ export interface AuthData {
 }
 
 export interface SignUpRequest {
-  name: string | undefined;
+  name: string;
   email: string;
-  birth: string | undefined;
-  phone: string | undefined;
+  birth: string;
+  phone: string;
   password: string;
   passwordConfirm: string;
 }

@@ -75,8 +75,8 @@ export const PersonalInfo: React.FC = () => {
         ? {
             firstName: user.firstName,
             lastName: user.lastName,
-            email: user.email,
-            phone: user.phone,
+            email: user.email.name,
+            phone: user.phone.number,
             nickname: user.userName,
             sex: user.sex,
             birthday: Dates.getDate(user.birthday),
@@ -162,12 +162,13 @@ export const PersonalInfo: React.FC = () => {
             </BaseButtonsForm.Item>
           </BaseCol>
 
-          {/*<BaseCol xs={24} md={12}>*/}
-          {/*  <PhoneItem verified={user?.phone.verified} />*/}
-          {/*</BaseCol>*/}
-          {/*<BaseCol xs={24} md={12}>*/}
-          {/*  <EmailItem verified={user?.email.verified} />*/}
-          {/*</BaseCol>*/}
+          <BaseCol xs={24} md={12}>
+            <PhoneItem verified={user?.phone.verified} />
+          </BaseCol>
+
+          <BaseCol xs={24} md={12}>
+            <EmailItem verified={user?.email.verified} />
+          </BaseCol>
 
           <BaseCol span={24}>
             <BaseButtonsForm.Item>

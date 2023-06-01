@@ -6,7 +6,7 @@ import { useResponsive } from 'hooks/useResponsive';
 import { BaseRow } from '@app/components/common/BaseRow/BaseRow';
 import { BaseCol } from '@app/components/common/BaseCol/BaseCol';
 
-export const Payment: React.FC = () => {
+export const Payments: React.FC = () => {
   const { isTablet } = useResponsive();
 
   const content = useMemo(
