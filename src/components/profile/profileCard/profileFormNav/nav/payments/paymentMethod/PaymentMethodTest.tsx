@@ -10,7 +10,6 @@ import { RequestPayParams, RequestPayResponse } from 'iamport-typings';
 import { useAppDispatch, useAppSelector } from '@app/hooks/reduxHooks';
 import { BaseCard } from '@app/components/common/BaseCard/BaseCard';
 import { doUpdatePoint } from '@app/store/slices/authSlice';
-import { message } from 'antd';
 
 const formItemLayout = {
   labelCol: { span: 24 },
@@ -54,16 +53,16 @@ export const PaymentMethodTest: React.FC = () => {
   };
 
   const onPaymentAccepted = (response: RequestPayResponse) => {
+    const { imp_uid, merchant_uid } = response;
+    console.log(response);
     if (response) {
       dispatch(doUpdatePoint(response))
         .unwrap()
         .then((res) => {
-          notificationController.success({ message: '충전 성공' });
-        })
-        .catch((error) => {
-          notificationController.error({ message: '충전 실패' });
+          console.log(res);
         });
     }
+    console.log(imp_uid, merchant_uid);
   };
   const onFinish = async (values = {}) => {
     setLoading(true);
