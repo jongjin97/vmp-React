@@ -67,3 +67,5 @@ export const setNewPassword = (newPasswordData: NewPasswordData): Promise<undefi
 
 export const updatePoint = (payment: RequestPayResponse): Promise<undefined> =>
   httpApi.post<undefined>('uesrs/point', { ...payment }).then(({ data }) => data);
+
+export const refreshTest = () => httpApi.post<undefined>('payment/test').then(({ data }) => data);

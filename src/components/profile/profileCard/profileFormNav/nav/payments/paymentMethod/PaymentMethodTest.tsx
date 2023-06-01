@@ -9,7 +9,8 @@ import { notificationController } from '@app/controllers/notificationController'
 import { RequestPayParams, RequestPayResponse } from 'iamport-typings';
 import { useAppDispatch, useAppSelector } from '@app/hooks/reduxHooks';
 import { BaseCard } from '@app/components/common/BaseCard/BaseCard';
-import { doUpdatePoint } from '@app/store/slices/authSlice';
+import { doRefreshTest, doUpdatePoint } from '@app/store/slices/authSlice';
+import { message } from 'antd';
 
 const formItemLayout = {
   labelCol: { span: 24 },
@@ -64,6 +65,14 @@ export const PaymentMethodTest: React.FC = () => {
         });
     }
   };
+
+  const test = () => {
+    dispatch(doRefreshTest())
+      .unwrap()
+      .then((res) => {
+        console.log(res);
+      });
+  };
   const onFinish = async (values = {}) => {
     setLoading(true);
     setTimeout(() => {
@@ -85,6 +94,9 @@ export const PaymentMethodTest: React.FC = () => {
         <BaseButtonsForm.Item>
           <BaseButton type="primary" htmlType="submit" loading={isLoading}>
             결제
+          </BaseButton>
+          <BaseButton type="primary" onClick={test}>
+            test
           </BaseButton>
         </BaseButtonsForm.Item>
       }
