@@ -29,7 +29,7 @@ export const LockForm: React.FC = () => {
   const [isLoading, setLoading] = useState(false);
   const [dateState, setDateState] = useState(new Date());
   const user = useAppSelector((state) => state.user.user);
-  const name = `${user?.name}`;
+  const fullName = `${user?.firstName} ${user?.lastName}`;
 
   const currentDateInUTC = dateState.toUTCString();
   const currentTime = Dates.format(currentDateInUTC, 'h:mm A');
@@ -42,7 +42,7 @@ export const LockForm: React.FC = () => {
 
   const handleSubmit = ({ password }: LockFormData) => {
     setLoading(true);
-    dispatch(doLogin({ email: user?.email || '', password }))
+    dispatch(doLogin({ email: user?.email.name || '', password }))
       .unwrap()
       .then(() => {
         navigate(-1);
@@ -62,7 +62,7 @@ export const LockForm: React.FC = () => {
           <S.AvatarCircle>
             <BaseAvatar src={user?.imgUrl} alt="user avatar" size={mobileOnly ? 59 : 77} />
           </S.AvatarCircle>
-          <S.Name>{name}</S.Name>
+          <S.Name>{fullName}</S.Name>
         </S.ContentWrapper>
         <S.FormItem
           label={t('common.password')}

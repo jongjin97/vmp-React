@@ -10,16 +10,22 @@ import { ReactComponent as GoogleIcon } from '@app/assets/icons/google.svg';
 import { ReactComponent as FacebookIcon } from '@app/assets/icons/facebook.svg';
 import * as Auth from '@app/components/layouts/AuthLayout/AuthLayout.styles';
 import * as S from './SignUpForm.styles';
-import { DayjsDatePicker } from '@app/components/common/pickers/DayjsDatePicker';
 
 interface SignUpFormData {
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
-  birth: string;
-  phone: string;
   password: string;
-  passwordConfirm: string;
 }
+
+const initValues = {
+  firstName: 'Chris',
+  lastName: 'Johnson',
+  email: 'chris.johnson@altence.com',
+  password: 'test-pass',
+  confirmPassword: 'test-pass',
+  termOfUse: true,
+};
 
 export const SignUpForm: React.FC = () => {
   const navigate = useNavigate();
@@ -28,21 +34,8 @@ export const SignUpForm: React.FC = () => {
 
   const { t } = useTranslation();
 
-  const handleChageBirth = (values: string) => {
-    const birth = values;
-    const date = new Date(birth);
-
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-
-    const result = `${year}${month}${day}`;
-    return result;
-  };
-
   const handleSubmit = (values: SignUpFormData) => {
     setLoading(true);
-    values.birth = handleChageBirth(values.birth);
     dispatch(doSignUp(values))
       .unwrap()
       .then(() => {
@@ -60,33 +53,21 @@ export const SignUpForm: React.FC = () => {
 
   return (
     <Auth.FormWrapper>
-      <BaseForm layout="vertical" onFinish={handleSubmit} requiredMark="optional">
+      <BaseForm layout="vertical" onFinish={handleSubmit} requiredMark="optional" initialValues={initValues}>
         <S.Title>{t('common.signUp')}</S.Title>
         <Auth.FormItem
-          name="name"
-          label={t('common.name')}
+          name="firstName"
+          label={t('common.firstName')}
           rules={[{ required: true, message: t('common.requiredField') }]}
         >
-          <Auth.FormInput placeholder={t('common.name')} />
+          <Auth.FormInput placeholder={t('common.firstName')} />
         </Auth.FormItem>
         <Auth.FormItem
-          name="birth"
-          label="Birth"
-          rules={[
-            {
-              required: true,
-              message: 'Please select date',
-            },
-          ]}
-        >
-          <DayjsDatePicker />
-        </Auth.FormItem>
-        <Auth.FormItem
-          label={t('common.phone')}
-          name="phone"
+          name="lastName"
+          label={t('common.lastName')}
           rules={[{ required: true, message: t('common.requiredField') }]}
         >
-          <Auth.FormInput placeholder={t('common.phone')} />
+          <Auth.FormInput placeholder={t('common.lastName')} />
         </Auth.FormItem>
         <Auth.FormItem
           name="email"
@@ -110,7 +91,7 @@ export const SignUpForm: React.FC = () => {
         </Auth.FormItem>
         <Auth.FormItem
           label={t('common.confirmPassword')}
-          name="passwordConfirm"
+          name="confirmPassword"
           dependencies={['password']}
           rules={[
             { required: true, message: t('common.requiredField') },

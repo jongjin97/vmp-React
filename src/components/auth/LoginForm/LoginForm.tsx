@@ -16,8 +16,8 @@ interface LoginFormData {
 }
 
 export const initValues: LoginFormData = {
-  email: 'kakao1302@naver.com',
-  password: '123qwe',
+  email: 'hello@altence.com',
+  password: 'some-test-pass',
 };
 
 export const LoginForm: React.FC = () => {
@@ -29,8 +29,6 @@ export const LoginForm: React.FC = () => {
 
   const handleSubmit = (values: LoginFormData) => {
     setLoading(true);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     dispatch(doLogin(values))
       .unwrap()
       .then(() => navigate('/'))
